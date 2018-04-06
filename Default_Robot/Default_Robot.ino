@@ -4,7 +4,6 @@ Current Author: Christopher McElroy (cmcelroy@g.hmc.edu) '19 (contributed in 201
 Previous Contributors:  Josephine Wong (jowong@hmc.edu) '18 (contributed in 2016)
                         Apoorva Sharma (asharma@hmc.edu) '17 (contributed in 2016)
 */
-//temp=ADC A , turb=ADC A 
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -21,7 +20,7 @@ Previous Contributors:  Josephine Wong (jowong@hmc.edu) '18 (contributed in 2016
 #include <Printer.h>
 #include <PControl.h>
 #define mySerial Serial1
-#include <LED.h>  // A template of a data source library
+#include <LED.h>  // A template of a data soruce library
 
 /////////////////////////* Global Variables *////////////////////////
 
@@ -129,7 +128,7 @@ void loop() {
   // uses the LED library to flash LED -- use this as a template for new libraries!
   if (currentTime-led.lastExecutionTime > LOOP_PERIOD) {
     led.lastExecutionTime = currentTime;
-    //insert other things for this loop if needed
+    led.flashLED();
   }
 
   if (currentTime- logger.lastExecutionTime > LOOP_PERIOD && logger.keepLogging) {

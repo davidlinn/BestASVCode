@@ -14,7 +14,7 @@ LED::LED(void) {
 
 void LED::init(void) {
   pinMode(LOOP_LED,OUTPUT); // LOOP_LED is defined in pinouts
-  ledOn();
+
   // this lets you print messages
   // the string gets displayed in the messages area
   // the number counts the number of times it is displayed at 10 Hz
