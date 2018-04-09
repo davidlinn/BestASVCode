@@ -19,6 +19,10 @@ public: // for functions outside code might call
 
   void flashLED(void);
 
+  void ledOn(void);
+
+  void ledOff(void);
+
   int lastExecutionTime = -1;
 
 private: // for helper functions and hidden variables
