@@ -30,7 +30,7 @@ void StateEstimator::updateState(sensors_vec_t * imu_state_p, gps_state_t * gps_
   // get heading
   float heading_rad = imu_state_p->heading*PI/180.0; // convert to radians
   heading_rad = -heading_rad + PI/2.0; // adjust from 0=North, CW=(+) to 0=East, CCW=(+)
-  state.heading = angleDiff(heading_rad);
+  state.heading = angleDiff(heading_rad); //angleDiff takes angle in radians
 
 }
 

@@ -50,6 +50,7 @@ void setup() {
   logger.include(&motor_driver);
   logger.include(&adc);
   logger.init();
+  
 
   printer.init();
   imu.init();
@@ -60,11 +61,11 @@ void setup() {
 
   const int number_of_waypoints = 2;
   const int waypoint_dimensions = 2;       // waypoints have two pieces of information, x then y.
-  double waypoints [] = { 0, 10, 0, 0 };   // listed as x0,y0,x1,y1, ... etc.
+  double waypoints [] = { 0, -10, 0, 0 };   // listed as x0,y0,x1,y1, ... etc.
   pcontrol.init(number_of_waypoints, waypoint_dimensions, waypoints);
   
-  const float origin_lat = 34.106465;
-  const float origin_lon = -117.712488;
+  const float origin_lat = 34.109463;
+  const float origin_lon = -117.712776;
   state_estimator.init(origin_lat, origin_lon); 
 
   printer.printMessage("Starting main loop",10);
