@@ -64,8 +64,8 @@ void setup() {
   double waypoints [] = { 0, -10, 0, 0 };   // listed as x0,y0,x1,y1, ... etc.
   pcontrol.init(number_of_waypoints, waypoint_dimensions, waypoints);
   
-  const float origin_lat = 34.106465;
-  const float origin_lon = -117.712488;
+  const float origin_lat = 34.109463;
+  const float origin_lon = -117.712776;
   state_estimator.init(origin_lat, origin_lon); 
 
   printer.printMessage("Starting main loop",10);
@@ -95,9 +95,8 @@ void loop() {
     printer.printValue(4,pcontrol.printWaypointUpdate());
     printer.printValue(5,pcontrol.printString());
     printer.printValue(6,motor_driver.printState());
-    printer.printValue(7,imu.printSimple());        
-    printer.printValue(8,imu.printRollPitchHeadingMahony());
-    printer.printValue(9,imu.printRollPitchHeadingMadgwick());
+    printer.printValue(7,imu.printRollPitchHeading());        
+    printer.printValue(8,imu.printAccels());
     printer.printToSerial();  // To stop printing, just comment this line out
   }
 
