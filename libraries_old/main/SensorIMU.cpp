@@ -2,7 +2,7 @@
 #include "Printer.h"
 extern Printer printer;
 
-SensorIMU::SensorIMU(void)
+SensorIMU::SensorIMU(void) //extend with additional variables
   : DataSource("rollIMU,pitchIMU,headingIMU,accelX,accelY,accelZ","float,float,float,float,float,float") {
 }
 
@@ -55,29 +55,35 @@ void SensorIMU::read(void) {
   float az = accel_event.acceleration.z;
 
   getOrientation(ax,ay,az,mx,my,mz);  // populate the this->simple field with simple orientation calcs
-  state.roll = simple.roll; 
-  state.pitch = simple.pitch; 
-  state.heading = simple.heading * 57.2958F;
+  //state.roll = simple.roll; 
+  //state.pitch = simple.pitch; 
+  //state.heading = simple.heading * 57.2958F;
   
   /////////// Old orientation estiamtion code from v1 ///////////////
-  // // Update the filter
-  // filter.update(gx, gy, gz,
-  //               ax, ay, az,
-  //               mx, my, mz);
+  // Update the filter
+  filter.update(gx, gy, gz,
+                ax, ay, az,
+                mx, my, mz);
  
-  // // update the orientation data
-  // state.roll = filter.getRoll();
-  // state.pitch = filter.getPitch();
-  // state.heading = filter.getYaw();
+  // update the orientation data
+  state.roll = filter.getRoll();
+  state.pitch = filter.getPitch();
+  state.heading = filter.getYaw();
+  // DO SOMETHING LIKE THIS FOR MADGE AND FILTER2
   
+  filter2.update(gx,gy,gz,ax,ay,az,mx,my,mz);
+  madge.roll = filter2.getRoll();
+  madge.pitch = filter2.getPitch();
+  madge.heading = filter2.getYaw();
+
   // udpate the acceleration data
   acceleration.x = ax;
   acceleration.y = ay;
   acceleration.z = az;
 }
 
-String SensorIMU::printRollPitchHeading(void) {
-  String printString = "IMU:"; 
+String SensorIMU::printRollPitchHeadingMahony(void) {
+  String printString = "IMU Mahony:"; 
   printString += " roll: ";
   printString += String(state.roll);
   printString += " pitch: "; 
@@ -87,8 +93,19 @@ String SensorIMU::printRollPitchHeading(void) {
   return printString; 
 }
 
+String SensorIMU::printRollPitchHeadingMadgwick(void) {
+  String printString = "IMU Madgwick:"; 
+  printString += " roll: ";
+  printString += String(madge.roll);
+  printString += " pitch: "; 
+  printString += String(madge.pitch); 
+  printString += " heading: ";
+  printString += String(madge.heading);
+  return printString; 
+}
+
 String SensorIMU::printSimple(void) {
-  String printString = "IMU:"; 
+  String printString = "IMU Simple:"; 
   printString += " roll: ";
   printString += String(simple.roll);
   printString += " pitch: "; 
@@ -109,7 +126,7 @@ String SensorIMU::printAccels(void) {
   return printString; 
 }
 
-size_t SensorIMU::writeDataBytes(unsigned char * buffer, size_t idx) {
+size_t SensorIMU::writeDataBytes(unsigned char * buffer, size_t idx) { //edit to log more stuff
   float * data_slot = (float *) &buffer[idx];
   data_slot[0] = state.roll;
   data_slot[1] = state.pitch;

@@ -27,12 +27,15 @@ public:
   // Latest reported orientation data is stored here
   sensors_vec_t state;
   sensors_vec_t simple;  // simple state calculation
+  sensors_vec_t madge;
   sensors_vec_t acceleration;
 
   // prints state to serial
-  String printRollPitchHeading(void);
-  String printAccels(void);
   String printSimple(void);
+  String printRollPitchHeadingMadgwick(void);
+  String printRollPitchHeadingMahony(void);
+  String printAccels(void);
+
 
   // from DataSource
   size_t writeDataBytes(unsigned char * buffer, size_t idx);
@@ -60,6 +63,7 @@ private:
   // Mahony is lighter weight filter for slower systems
   // (Madgwick can be used for fast rotation)
   Mahony filter;
+  Madgwick filter2;
 
 
 };

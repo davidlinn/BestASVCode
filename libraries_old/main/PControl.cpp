@@ -29,7 +29,7 @@ void PControl::calculateControl(state_t * state) {
   int x_des = getWayPoint(0);
   int y_des = getWayPoint(1);
 
-  yaw_des = atan2(y_des - state->y, x_des - state->x);
+  yaw_des = atan2(y_des - state->y, x_des - state->x); //atan2 returns a value [-pi,pi]
   yaw = state->heading;
   u = Kp*angleDiff(yaw_des - yaw);
 
