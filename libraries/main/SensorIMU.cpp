@@ -105,7 +105,7 @@ String SensorIMU::printRollPitchHeadingMadgwick(void) {
 }
 
 String SensorIMU::printSimple(void) {
-  String printString = "IMU:"; 
+  String printString = "IMU Simple:"; 
   printString += " roll: ";
   printString += String(simple.roll);
   printString += " pitch: "; 

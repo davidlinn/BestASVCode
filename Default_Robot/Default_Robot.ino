@@ -84,6 +84,7 @@ void setup() {
 //////////////////////////////* Loop */////////////////////////
 
 void loop() {
+  /*
   currentTime=millis();
   
   if ( currentTime-printer.lastExecutionTime > LOOP_PERIOD ) {
@@ -137,5 +138,7 @@ void loop() {
     logger.lastExecutionTime = currentTime;
     logger.log();
   }
+*/
+motor_driver.driveForward(10,0);
 }
 
