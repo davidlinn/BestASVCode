@@ -7,17 +7,22 @@
 // include relevant libraries, always good to have these two
 #include <Arduino.h>
 #include "Pinouts.h"
+#include "DataSource.h"
 
 // controls how often and when in the loop this class's functions run
 
 
-class RF {
+class RF : public DataSource {
 public: // for functions outside code might call
   RF(void);
 
   void init(void);
 
+  void read(void);
+
   String printPower(void);
+
+  size_t writeDataBytes(unsigned char * buffer, size_t idx);
 
   unsigned int t1 = 2;             // ADC reading
   unsigned int t2 = 1;             // ADC reading
@@ -31,6 +36,7 @@ private: // for helper functions and hidden variables
   unsigned int READING[12];        // int array to store readings from LTC5587
                                  // this array will have the bits backwards
                                  // (MSB last, LSB first)
+  unsigned int readingSum;
   
 };
 

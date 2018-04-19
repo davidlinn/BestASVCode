@@ -58,6 +58,7 @@ void setup() {
   logger.include(&state_estimator);
   logger.include(&motor_driver);
   logger.include(&adc);
+  logger.include(&rf);
   logger.init();
 
   printer.init();
@@ -147,7 +148,7 @@ void loop() {
 
   if (currentTime - rf.lastExecutionTime > LOOP_PERIOD) {
     rf.lastExecutionTime = currentTime;
-    //rf do something
+    rf.read();
   }
 
   if (currentTime- logger.lastExecutionTime > LOOP_PERIOD && logger.keepLogging) {

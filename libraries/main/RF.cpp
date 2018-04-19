@@ -9,7 +9,7 @@
 extern Printer printer;
 
 // constructor for class objects
-RF::RF(void) { //default initializes READING array
+RF::RF(void) : DataSource("rf","int") { //default initializes READING array and reading sum
 }
 
 void RF::init(void) {
@@ -23,8 +23,8 @@ void RF::init(void) {
   printer.printMessage("Initialized RF Reader at " + String(millis()), 10);
 }
 
-String RF::printPower(void) {
-  unsigned int readingSum = 0;
+void RF::read(void) {
+  readingSum = 0;
 
   digitalWrite(SCK_SCK, LOW);             // Start with clock low
   digitalWrite(NSS_CONV, HIGH);           // Bring CONV high
@@ -44,5 +44,14 @@ String RF::printPower(void) {
     delayMicroseconds(t5/2);
     readingSum += READING[i] << i;
   }
+}
+
+String RF::printPower(void) {
   return "RF Power Recieved: " + String(readingSum);
+}
+
+size_t RF::writeDataBytes(unsigned char * buffer, size_t idx) {
+  int * data_slot = (int *) &buffer[idx];
+  data_slot[0] = readingSum;
+  return idx + sizeof(int);
 }
