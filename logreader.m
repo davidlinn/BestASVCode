@@ -2,7 +2,7 @@
 clear;
 clf;
 
-filenum = '026';
+filenum = '027';
 infofile = strcat('INF', filenum, '.TXT');
 datafile = strcat('LOG', filenum, '.BIN');
 
@@ -50,15 +50,15 @@ end
 fclose(fid);
 clf;
 figure;
-x = x(4103:end);
-y = y(4103:end);
+x = x(1:end);
+y = y(1:end);
 x = x(abs(x)<1000);
 y = y(abs(y)<1000);
-plot(x,y);
-% for i = 1:length(x)
-%     plot(x(1:i),y(1:i),'bo');
-%     pause(0.01);
-% end
+%plot(x,y);
+for i = 1:length(x)
+     plot(x(1:i),y(1:i),'bo');
+     pause(0.001);
+end
 
 
 % %% Section 3

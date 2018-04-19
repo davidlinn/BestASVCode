@@ -4,6 +4,9 @@ Current Author: Christopher McElroy (cmcelroy@g.hmc.edu) '19 (contributed in 201
 Previous Contributors:  Josephine Wong (jowong@hmc.edu) '18 (contributed in 2016)
                         Apoorva Sharma (asharma@hmc.edu) '17 (contributed in 2016)
 */
+//How to orient the bot:
+//If you pretend to be the robot, you should be able to read
+//"Student Button" and "Student LED"
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -20,7 +23,8 @@ Previous Contributors:  Josephine Wong (jowong@hmc.edu) '18 (contributed in 2016
 #include <Printer.h>
 #include <PControl.h>
 #define mySerial Serial1
-#include <LED.h>  // A template of a data soruce library
+#include <LED.h>  // A template of a data source library
+#include <RF.h>
 
 /////////////////////////* Global Variables *////////////////////////
 
@@ -34,15 +38,16 @@ SensorIMU imu;
 Logger logger;
 Printer printer;
 LED led;
+RF rf;
 
 // loop start recorder
 int loopStartTime;
 int currentTime;
 
 // Waypoint setup
-const int number_of_waypoints = 2;
+const int number_of_waypoints = 3;
 const int waypoint_dimensions = 2;       // waypoints have two pieces of information, x then y.
-double waypoints [] = { 0, 10, 0, 0 };   // listed as x0,y0,x1,y1, ... etc.
+double waypoints [] = { 5, 0, 20, 0, 0, 0 };   // listed as x0,y0,x1,y1, ... etc.
 
 ////////////////////////* Setup *////////////////////////////////
 
@@ -61,11 +66,14 @@ void setup() {
   gps.init(&GPS);
   motor_driver.init();
   led.init();
+  rf.init();
 
   pcontrol.init(number_of_waypoints, waypoint_dimensions, waypoints);
   
-  const float origin_lat = 34.106465;
-  const float origin_lon = -117.712488;
+  //const float origin_lat = 34.106465; //campus
+  //const float origin_lon = -117.712488;
+  const float origin_lat = 34.103810; //Scripps
+  const float origin_lon = -117.708313;
   state_estimator.init(origin_lat, origin_lon); 
 
   printer.printMessage("Starting main loop",10);
@@ -97,6 +105,7 @@ void loop() {
     printer.printValue(6,motor_driver.printState());
     printer.printValue(7,imu.printRollPitchHeading());        
     printer.printValue(8,imu.printAccels());
+    printer.printValue(9,rf.printPower()); //prints but doesn't log
     printer.printToSerial();  // To stop printing, just comment this line out
   }
 
@@ -126,10 +135,11 @@ void loop() {
     state_estimator.updateState(&imu.state, &gps.state);
   }
   
-  // uses the LED library to flash LED -- use this as a template for new libraries!
+  // use this as a template for new libraries!
   if (currentTime-led.lastExecutionTime > LOOP_PERIOD) {
     led.lastExecutionTime = currentTime;
-    led.flashLED();
+    //do nothing for now
+    
   }
 
   if (currentTime- logger.lastExecutionTime > LOOP_PERIOD && logger.keepLogging) {

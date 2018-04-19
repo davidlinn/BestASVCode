@@ -30,3 +30,12 @@ void LED::flashLED(void) {
   LED_State = !LED_State;
 }
 
+void LED::ledOn(void) {
+  digitalWrite(LOOP_LED,HIGH);  // pulls the LED pin high
+  LED_State = 1;
+}
+
+void LED::ledOff(void) {
+  digitalWrite(LOOP_LED,LOW);  // pulls the LED pin high
+  LED_State = 0;
+}
