@@ -17,7 +17,7 @@ public: // for functions outside code might call
 
   void init(void);
 
-  unsigned int printPower(void);
+  String printPower(void);
 
   unsigned int t1 = 2;             // ADC reading
   unsigned int t2 = 1;             // ADC reading

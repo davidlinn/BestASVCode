@@ -14,15 +14,15 @@
 #define MOTOR_X_REVERSE 20
 
 //RF+SERVO
-#define NSS_CONV = 17;      // NSS for SPI, CONV for LTC5587 - White
-#define MISO_SDO = 18;      // MISO for SPI, SDO for LTC5587 - Yellow
-#define SCK_SCK = 19;        // SCK on both SPI and LTC5587 - Green
-#define SERVO_PIN = 9;
+#define NSS_CONV 17      // NSS for SPI, CONV for LTC5587 - White
+#define MISO_SDO 18      // MISO for SPI, SDO for LTC5587 - Yellow
+#define SCK_SCK 19        // SCK on both SPI and LTC5587 - Green
+#define SERVO_PIN 9
 
 //TEMP
-#define TEMP_PIN = 14;
-#define TURB_STRAIGHT_PIN = 15;
-#define TURB_90_PIN = 16;
+#define TEMP_PIN 14
+#define TURB_STRAIGHT_PIN 15
+#define TURB_90_PIN 16
 
 /* TOF */
 #define SPEAKER_PIN 20

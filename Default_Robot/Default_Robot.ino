@@ -37,7 +37,7 @@ ADCSampler adc;
 SensorIMU imu;
 Logger logger;
 Printer printer;
-LED led;
+//LED led;
 RF rf;
 
 // loop start recorder
@@ -65,7 +65,7 @@ void setup() {
   mySerial.begin(9600);
   gps.init(&GPS);
   motor_driver.init();
-  led.init();
+  //led.init();
   rf.init();
 
   pcontrol.init(number_of_waypoints, waypoint_dimensions, waypoints);
@@ -85,6 +85,7 @@ void setup() {
   state_estimator.lastExecutionTime = loopStartTime - LOOP_PERIOD + STATE_ESTIMATOR_LOOP_OFFSET;
   pcontrol.lastExecutionTime        = loopStartTime - LOOP_PERIOD + P_CONTROL_LOOP_OFFSET;
   logger.lastExecutionTime          = loopStartTime - LOOP_PERIOD + LOGGER_LOOP_OFFSET;
+  rf.lastExecutionTime              = loopStartTime - LOOP_PERIOD + RF_LOOP_OFFSET;
 }
 
 
@@ -136,10 +137,17 @@ void loop() {
   }
   
   // use this as a template for new libraries!
+  /*
   if (currentTime-led.lastExecutionTime > LOOP_PERIOD) {
     led.lastExecutionTime = currentTime;
     //do nothing for now
     
+  }
+  */
+
+  if (currentTime - rf.lastExecutionTime > LOOP_PERIOD) {
+    rf.lastExecutionTime = currentTime;
+    //rf do something
   }
 
   if (currentTime- logger.lastExecutionTime > LOOP_PERIOD && logger.keepLogging) {
