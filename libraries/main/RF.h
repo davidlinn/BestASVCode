@@ -24,6 +24,8 @@ public: // for functions outside code might call
 
   size_t writeDataBytes(unsigned char * buffer, size_t idx);
 
+  unsigned int getPower(void);
+
   unsigned int t1 = 2;             // ADC reading
   unsigned int t2 = 1;             // ADC reading
   unsigned int t3 = 1;             // ADC reading

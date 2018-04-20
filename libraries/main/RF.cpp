@@ -55,3 +55,7 @@ size_t RF::writeDataBytes(unsigned char * buffer, size_t idx) {
   data_slot[0] = readingSum;
   return idx + sizeof(int);
 }
+
+unsigned int RF::getPower(void) {
+  return readingSum;
+}

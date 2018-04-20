@@ -2,10 +2,13 @@
 #define __PCONTROL_H__
 
 #define SUCCESS_RADIUS 2.0 // success radius in meters
+#define RFLOOPREADINGS 20
+#define RFEXCLUDEBELOW 215
 
 #include <Arduino.h>
 #include "MotorDriver.h"
 #include "StateEstimator.h"
+#include "RF.h"
 extern MotorDriver motorDriver;
 
 class PControl {
@@ -14,6 +17,9 @@ public:
 
   // defines the waypoints used for pControl
   void init(const int totalWayPoints_in, const int stateDims_in, double * wayPoints_in);
+
+  //sets uL and uR based on a number of RF power readings defined by RFLOOPREADINGS
+  void rfNavigateLoop(RF& rf);
 
   // sets the motor speeds using P-Control
   void calculateControl(state_t * state);
@@ -46,6 +52,11 @@ private:
   int totalWayPoints, stateDims;
   double * wayPoints;
   int currentWayPoint = 0;
+  
+  //RF Navigate
+  int rfReadings[RFLOOPREADINGS];
+  int rfReadingsSize;
+  bool veerLeft;
 
 };
 

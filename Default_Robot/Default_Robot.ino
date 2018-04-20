@@ -8,6 +8,8 @@ Previous Contributors:  Josephine Wong (jowong@hmc.edu) '18 (contributed in 2016
 //If you pretend to be the robot, you should be able to read
 //"Student Button" and "Student LED"
 
+#define RFNAV 1
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <Pinouts.h>
@@ -85,6 +87,7 @@ void setup() {
   adc.lastExecutionTime             = loopStartTime - LOOP_PERIOD + ADC_LOOP_OFFSET;
   state_estimator.lastExecutionTime = loopStartTime - LOOP_PERIOD + STATE_ESTIMATOR_LOOP_OFFSET;
   pcontrol.lastExecutionTime        = loopStartTime - LOOP_PERIOD + P_CONTROL_LOOP_OFFSET;
+//rf
   logger.lastExecutionTime          = loopStartTime - LOOP_PERIOD + LOGGER_LOOP_OFFSET;
   rf.lastExecutionTime              = loopStartTime - LOOP_PERIOD + RF_LOOP_OFFSET;
 }
@@ -113,7 +116,12 @@ void loop() {
 
   if ( currentTime-pcontrol.lastExecutionTime > LOOP_PERIOD ) {
     pcontrol.lastExecutionTime = currentTime;
-    pcontrol.calculateControl(&state_estimator.state);
+    if (RFNAV) {
+      pcontrol.rfNavigateLoop(rf);
+    }
+    else {
+      pcontrol.calculateControl(&state_estimator.state);
+    }
     motor_driver.driveForward(pcontrol.uL,pcontrol.uR);
   }
 

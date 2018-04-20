@@ -15,6 +15,8 @@ void PControl::init(const int totalWayPoints_in, const int stateDims_in, double 
   stateDims = stateDims_in;
   totalWayPoints = totalWayPoints_in;
   wayPoints = wayPoints_in;
+  veerLeft = true;
+  rfReadingsSize = 0;
 }
 
 int PControl::getWayPoint(int dim) {
@@ -38,10 +40,55 @@ void PControl::calculateControl(state_t * state) {
 
 }
 
+void PControl::rfNavigateLoop(RF& rf) {
+  rfReadings[rfReadingsSize] = rf.getPower(); //starts at 0. reading size will increment later
+  
+  if (rfReadingsSize == RFLOOPREADINGS) {
+    //remove all readings under 215, calculate average of first half and second half of readings
+    unsigned int sum = 0;
+    unsigned int numReadings = 0;
+    for (unsigned int index = 0; index < RFLOOPREADINGS/2; ++index) { //for each reading in first block of array
+      if (rfReadings[index] > RFEXCLUDEBELOW) {
+        sum += rfReadings[index];
+        ++numReadings;
+      }
+    }
+    double firstAverage = (double)sum / (double)numReadings;
+
+    sum = 0;
+    numReadings = 0;
+    for (unsigned int index = RFLOOPREADINGS/2; index < RFLOOPREADINGS; ++index) { //for each reading in second block of array
+      if (rfReadings[index] > RFEXCLUDEBELOW) {
+        sum += rfReadings[index];
+        ++numReadings;
+      }
+    }
+    double secondAverage = (double)sum / (double)numReadings;
+
+    if (secondAverage < firstAverage) {
+      veerLeft = !veerLeft; //flip veering direction
+    }
+
+    rfReadingsSize = 0; //reset readings
+  }
+  
+  //adjust hardcoded average motor thrust and motor power differential below
+  
+  //set motor control efforts based on veerLeft
+  if (veerLeft) {
+    uL = 40;
+    uR = 60;
+  }
+  else {
+    uL = 60;
+    uR = 40;
+  }
+}
+
 String PControl::printString(void) {
   String printString = "PControl: Yaw_Des: " + String(yaw_des*180.0/PI)
     + " Yaw: " + String(yaw*180.0/PI)
-    + " u: " + String(u);
+    + " u: " + String(u) + " uL: " + String(uL) + " uR: " + String(uR); 
 
   return printString; 
 }

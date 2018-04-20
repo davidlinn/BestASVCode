@@ -7,7 +7,7 @@
  * ADCSampler implements SD logging for the ADC channels
  */
 
-#define NUM_PINS 14
+#define NUM_PINS 20
 
 class ADCSampler : public DataSource
 {

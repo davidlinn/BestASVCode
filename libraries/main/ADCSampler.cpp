@@ -23,10 +23,13 @@ void ADCSampler::updateSample(void)
 
 String ADCSampler::printSample(void)
 {
-  String printString = "ADC:";
+  String printString = "";
   for (int i=0; i<NUM_PINS; i++) {
-    printString += " ";
+    printString += "A";
+    printString += String(i);
+    printString += ":";
     printString += String(sample[i]);
+    printString += " ";
   }
   return printString; //printer.printValue(0, printString);
 }
