@@ -41,7 +41,8 @@ void PControl::calculateControl(state_t * state) {
 }
 
 void PControl::rfNavigateLoop(RF& rf) {
-  rfReadings[rfReadingsSize] = rf.getPower(); //starts at 0. reading size will increment later
+  rfReadings[rfReadingsSize] = rf.getPower(); //starts at 0
+  ++rfReadingsSize;
   
   if (rfReadingsSize == RFLOOPREADINGS) {
     //remove all readings under 215, calculate average of first half and second half of readings
@@ -53,7 +54,7 @@ void PControl::rfNavigateLoop(RF& rf) {
         ++numReadings;
       }
     }
-    double firstAverage = (double)sum / (double)numReadings;
+    firstAverage = (double)sum / (double)numReadings;
 
     sum = 0;
     numReadings = 0;
@@ -63,7 +64,7 @@ void PControl::rfNavigateLoop(RF& rf) {
         ++numReadings;
       }
     }
-    double secondAverage = (double)sum / (double)numReadings;
+    secondAverage = (double)sum / (double)numReadings;
 
     if (secondAverage < firstAverage) {
       veerLeft = !veerLeft; //flip veering direction
@@ -83,6 +84,21 @@ void PControl::rfNavigateLoop(RF& rf) {
     uL = 60;
     uR = 40;
   }
+}
+
+String PControl::printAverages(void) {
+  String printString = "First Ave: " + String(firstAverage) +
+  " Second Ave: " + String(secondAverage) +
+  " Veering Direction:";
+  if (veerLeft)
+    printString += "Left";
+  else
+    printString += "Right";
+  printString += " RFReadingsSize: " + String(rfReadingsSize);
+  /*" RF Readings: ";
+  for (int i = 0; i < rfReadingsSize; ++i)
+    printString += String(rfReadings[i]) + " "; */
+  return printString;
 }
 
 String PControl::printString(void) {

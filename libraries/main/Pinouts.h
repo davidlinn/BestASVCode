@@ -8,7 +8,7 @@
 #ifndef __PINOUTS_H__
 #define __PINOUTS_H__
 
-//#define LOOP_LED 7
+#define LOOP_LED 7
 #define USER_SWITCH 2
 
 #define MOTOR_L_FORWARD 6		// M4: 8Y is blue, 7Y is yellow

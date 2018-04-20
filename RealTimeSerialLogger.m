@@ -45,7 +45,7 @@ tic
  
 while ishandle(plotGraph) %Loop when Plot is Active
     dat = fscanf(s, '%s');
-    %disp(dat)
+    %disp(dat) //Print 
     
     pause(delay);
     %{

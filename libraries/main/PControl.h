@@ -20,6 +20,7 @@ public:
 
   //sets uL and uR based on a number of RF power readings defined by RFLOOPREADINGS
   void rfNavigateLoop(RF& rf);
+  String printAverages(void);
 
   // sets the motor speeds using P-Control
   void calculateControl(state_t * state);
@@ -57,7 +58,8 @@ private:
   int rfReadings[RFLOOPREADINGS];
   int rfReadingsSize;
   bool veerLeft;
-
+  double firstAverage;
+  double secondAverage;
 };
 
 #endif

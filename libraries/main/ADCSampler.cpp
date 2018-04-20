@@ -23,10 +23,11 @@ void ADCSampler::updateSample(void)
 
 String ADCSampler::printSample(void)
 {
+  const int apinmap[NUM_PINS] =  {00,01,02,03,10,11,12,13,14,15,16,17,18,19};
   String printString = "";
   for (int i=0; i<NUM_PINS; i++) {
     printString += "A";
-    printString += String(i);
+    printString += String(apinmap[i]);
     printString += ":";
     printString += String(sample[i]);
     printString += " ";

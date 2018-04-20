@@ -1,6 +1,7 @@
 /********
-Default E80 Lab 01 
-Current Author: Christopher McElroy (cmcelroy@g.hmc.edu) '19 (contributed in 2017)
+Default E80 Lab 01 - BestASVCode - Sec 2 Team 1
+Current Author: David Linn, Spencer Rosen, Max Maleno, Nick Koskelo
+Christopher McElroy (cmcelroy@g.hmc.edu) '19 (contributed in 2017)
 Previous Contributors:  Josephine Wong (jowong@hmc.edu) '18 (contributed in 2016)
                         Apoorva Sharma (asharma@hmc.edu) '17 (contributed in 2016)
 */
@@ -111,6 +112,7 @@ void loop() {
     printer.printValue(7,imu.printRollPitchHeading());        
     printer.printValue(8,imu.printAccels());
     printer.printValue(9,rf.printPower()); //prints but doesn't log
+    printer.printValue(10, pcontrol.printAverages());
     printer.printToSerial();  // To stop printing, just comment this line out
   }
 
