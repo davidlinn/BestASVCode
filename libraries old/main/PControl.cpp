@@ -1,6 +1,5 @@
 #include "PControl.h"
 #include "Printer.h"
-#include <stdlib.h>
 extern Printer printer;
 
 inline float angleDiff(float a) {
@@ -55,8 +54,7 @@ void PControl::rfNavigateLoop(RF& rf) {
         ++numReadings;
       }
     }
-    if (numReadings != 0)
-      firstAverage = (double)sum / (double)numReadings;
+    firstAverage = (double)sum / (double)numReadings;
 
     sum = 0;
     numReadings = 0;
@@ -66,8 +64,7 @@ void PControl::rfNavigateLoop(RF& rf) {
         ++numReadings;
       }
     }
-    if (numReadings != 0)
-      secondAverage = (double)sum / (double)numReadings;
+    secondAverage = (double)sum / (double)numReadings;
 
     if (secondAverage < firstAverage) {
       veerLeft = !veerLeft; //flip veering direction
@@ -79,32 +76,14 @@ void PControl::rfNavigateLoop(RF& rf) {
   //adjust hardcoded average motor thrust and motor power differential below
   
   //set motor control efforts based on veerLeft
-
-  //PControl
-  
-  error = abs(((double)(secondAverage-firstAverage))/5);
   if (veerLeft) { //Need to set uR > uL for motor differences
-    uL = 10-error;
-    uR = Kr*(40+error);
-    if (uR > 80) uR = 80;
-    if (uL < 0) uL = 0;
-  }
-  else {
-    uL = 20+error;
-    uR = Kr*(15-error);
-    if (uL > 40) uL = 40;
-    if (uR < 0) uR = 0;
-  }
-
- //Bang Bang
-  /* if (veerLeft) { //Need to set uR > uL for motor differences
     uL = 5;
     uR = 25;
   }
   else {
     uL = 10;
     uR = 10;
-  }*/
+  }
 }
 
 String PControl::printAverages(void) {
@@ -116,7 +95,6 @@ String PControl::printAverages(void) {
   else
     printString += "Right";
   printString += " RFReadingsSize: " + String(rfReadingsSize);
-  printString += " Error: " + String(error);
   /*" RF Readings: ";
   for (int i = 0; i < rfReadingsSize; ++i)
     printString += String(rfReadings[i]) + " "; */

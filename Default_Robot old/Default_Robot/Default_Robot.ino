@@ -48,11 +48,9 @@ int loopStartTime;
 int currentTime;
 
 // Waypoint setup
-const int number_of_waypoints = 5;
+const int number_of_waypoints = 1;
 const int waypoint_dimensions = 2;       // waypoints have two pieces of information, x then y.
-double y_adjust = 16.97;
-double x_adjust = 2.12;
-double waypoints [] = { 2.5+x_adjust, 2.5+y_adjust, 2.5+x_adjust, -2.5+y_adjust, -2.5+x_adjust, -2.5+y_adjust, -2.5+x_adjust, 2.5+y_adjust, 2.5+x_adjust, 2.5+y_adjust };   // listed as x0,y0,x1,y1, ... etc.
+double waypoints [] = { 0, 0 };   // listed as x0,y0,x1,y1, ... etc.
 
 ////////////////////////* Setup *////////////////////////////////
 
@@ -76,15 +74,12 @@ void setup() {
 
   pcontrol.init(number_of_waypoints, waypoint_dimensions, waypoints);
   
-  //const float origin_lat = 33.46254; //X on the beach
-  //const float origin_lon = -117.70555;
+  const float origin_lat = 33.46254; //X on the beach
+  const float origin_lon = -117.70555;
   //const float origin_lat = 33.46247; //Rocks
   //const float origin_lon = -117.70623;
-  const float origin_lat = 33.46261; //Transmitter
-  const float origin_lon = -117.70601;
   //const float origin_lat = 34.103810; //Scripps
   //const float origin_lon = -117.708313;
-  state_estimator.init(origin_lat, origin_lon); 
   state_estimator.init(origin_lat, origin_lon); 
 
   printer.printMessage("Starting main loop",10);

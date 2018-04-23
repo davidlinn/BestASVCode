@@ -36,9 +36,9 @@ public:
   float dist;            // distance to waypoint
   float u;               // control effort
   float Kp=10.0;         // proportional control gain
-  float Kr=1.4;          // right motor gain correction
+  float Kr=1.0;          // right motor gain correction
   float Kl=1.0;          // left motor gain correction
-  float avgPower = 20.0;  // average forward thrust
+  float avgPower = 5.0;  // average forward thrust
   double uR;             // right motor effort
   double uL;             // left motor effort
 
@@ -60,7 +60,6 @@ private:
   bool veerLeft;
   double firstAverage;
   double secondAverage;
-  double error;
 };
 
 #endif
