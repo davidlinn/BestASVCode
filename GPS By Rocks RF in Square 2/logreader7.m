@@ -64,18 +64,22 @@ clf;
 % title('position');
 
 samples=size(x);
-% figure (2)
-% plot(A17);
-% title('unfiltered temp');
+figure (1)
 temp_unfiltered = cast(A17, 'double');
+plot(temp_unfiltered*3.3/1023);
+xlabel('Sample number');
+ylabel('Voltage (V)');
+title('Unfiltered Temperature');
 temp_unfiltered = temp_unfiltered(end-samples(1)+1:end);
 % temp_mags = abs(fft(temp_unfiltered));
 % num_bins = length(temp_mags);
 [b, a] = butter(2, .01, 'low');
 temp_filtered = filter(b,a,temp_unfiltered);
 figure (2)
-plot(temp_filtered);
-title('filtered temp');
+plot(temp_filtered*3.3/1023);
+xlabel('Sample number');
+ylabel('Voltage (V)');
+title('Filtered Temperature');
 
 figure (6)
 plot(A16);

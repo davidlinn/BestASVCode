@@ -64,9 +64,9 @@ clf;
 % title('position');
 
 samples=size(x);
-% figure (2)
-% plot(A17);
-% title('unfiltered temp');
+figure (1)
+plot(A17);
+title('unfiltered temp');
 temp_unfiltered = cast(A17, 'double');
 temp_unfiltered = temp_unfiltered(end-samples(1)+1:end);
 % temp_mags = abs(fft(temp_unfiltered));

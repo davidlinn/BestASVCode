@@ -64,14 +64,14 @@ clf;
 % title('position');
 
 samples=size(x);
-figure (12)
-plot(A17);
-title('unfiltered temp');
+% figure (2)
+% plot(A17);
+% title('unfiltered temp');
 temp_unfiltered = cast(A17, 'double');
 temp_unfiltered = temp_unfiltered(end-samples(1)+1:end);
 % temp_mags = abs(fft(temp_unfiltered));
 % num_bins = length(temp_mags);
-[b, a] = butter(2, .005, 'low');
+[b, a] = butter(2, .01, 'low');
 temp_filtered = filter(b,a,temp_unfiltered);
 figure (2)
 plot(temp_filtered);
@@ -116,7 +116,7 @@ rf_unfiltered = cast(rf, 'double');
 rf_unfiltered = rf_unfiltered(end-samples(1)+1:end);
 % turb_mags = abs(fft(turb_unfiltered));
 % num_bins = length(turb_mags);
-[b, a] = butter(2, .005, 'low');
+[b, a] = butter(2, .05, 'low');
 rf_filtered = filter(b,a,rf_unfiltered);
 figure (13)
 plot(rf_filtered);
