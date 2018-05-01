@@ -2,7 +2,7 @@
 clear;
 clf;
 
-filenum = '004';
+filenum = '001';
 infofile = strcat('INF', filenum, '.TXT');
 datafile = strcat('LOG', filenum, '.BIN');
 
@@ -49,19 +49,19 @@ end
 
 fclose(fid);
 clf;
-% figure (1)
-% x = x(1:end);
-% y = y(1:end);
-% x = x(abs(x)<1000);
-% y = y(abs(y)<1000);
-% plot(x,y);
-% for i = 1:length(x)
-%      plot(x(1:i),y(1:i),'bo');
-%      pause(0.001);
-% end
-% xlabel('x');
-% ylabel('y');
-% title('position');
+figure (1)
+x = x(1:end);
+y = y(1:end);
+x = x(abs(x)<1000);
+y = y(abs(y)<1000);
+plot(x,y);
+for i = 1:length(x)
+     plot(x(1:i),y(1:i),'bo');
+     pause(0.001);
+end
+xlabel('x');
+ylabel('y');
+title('position');
 
 samples=size(x);
 % figure (2)
@@ -108,11 +108,11 @@ turbidity = straight_filtered./turb_filtered;
 plot(turbidity);
 title('turbidity');
 
-xshore = 6;
-yshore = 22;
+xshore = 0;
+yshore = 0;
 distfromshore = ((x-xshore).^2+(y-yshore).^2).^(1/2);
-start=2000;
-ending=6300;
+start=2700;
+ending=3200;
 
 
 %REQUIRES ATTENTION
@@ -120,9 +120,9 @@ orderforce = 1; %order of the polynomial fit
 ordercoeff = 1;
 
 %REQUIRES ATTENTION
-xstart = 20; %start and end values to cover the range
+xstart = 0; %start and end values to cover the range
 %REQUIRES ATTENTION
-xend = 27; %of the measured data
+xend = 20; %of the measured data
 %values to plot the best fit curve over
 x0 = linspace(xstart,xend,100); 
 
