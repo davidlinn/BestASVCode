@@ -36,8 +36,8 @@ plot(x0, lower, '-r');
 xlabel('Ratio of voltages (unitless)');
 %REQUIRES ATTENTION
 ylabel('Turbidity (ntu)');
-title('Turbidity vs Ratio calibration curve');
+title('Turbidity vs Ratio of Photodiodes');
 legend('Measured Data','Best Fit','Best Fit + Uncertainty','Best Fit - Uncertainty');
 %REQUIRES ATTENTION
-text(.5, 0, ['Turbidity = ' num2str(coefficients(1)) ' * Ratio + ' num2str(coefficients(2))]);
+text(.3, 0, ['Turbidity = ' num2str(coefficients(1)) ' * Ratio + ' num2str(coefficients(2))]);
 

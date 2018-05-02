@@ -62,56 +62,114 @@ clf;
 % xlabel('x');
 % ylabel('y');
 % title('position');
+% figure (5)
+% plot(rf(rf<1000&rf>200));
+start = 2600;
+ending = 3500;
+square = rf(start:ending);
+xsquare = x(start:ending);
+ysquare = y(start:ending);
+square = square(square<1000&square>200);
+xsquare = xsquare(square<1000&square>200);
+ysquare = ysquare(square<1000&square>200);
+figure (1)
+plot(square);
+title('square');
+figure (2)
+plot(xsquare,ysquare,'bo');
+title('position');
+
+square_unfiltered = cast(square, 'double');
+[b, a] = butter(2, .02, 'low');
+square_filtered = filter(b,a,square_unfiltered);
+figure (3)
+square_dBm = (square_filtered-205)/37-26;
+square_power = 10.^(square_dBm/10);
+plot(square_filtered);
+title('RF Power Around Square Path');
+xlabel('Sample number');
+ylabel('RF power module digital output');
+
+distfromtrans = ((xsquare+1).^2+(ysquare-8).^2).^(1/2);
+distfromtrans = distfromtrans(square_filtered>200);
+square_filtered = square_filtered(square_filtered>200);
+%THIS ONE
+squareclose = square_filtered(xsquare<2&ysquare<11);
+distclose = distfromtrans(xsquare<2&ysquare<11);
+x0 = linspace(1,7,100);
+theory = [6*2.25];
+for i=2:100
+    theory(i)=theory(i-1)*x0(i-1)^2/x0(i)^2;
+end
+figure (4)
+dBm = (square_filtered-205)/37-26;
+power=10.^(dBm/10);
+
+for i=1:100
+    if theory(i)<2.51
+        theory(i)=2.51;
+    end
+end
+
+plot(distfromtrans,power*1000,'bo');
+hold on;
+plot(x0,theory,'-r');
+title('Power vs Distance from transmitter');
+xlabel('Distance from transmitter (m)');
+ylabel('Power (uW)');
+legend('Measured Data','Theoretical Trend');
 
 samples=size(x);
-figure (1)
-temp_unfiltered = cast(A17, 'double');
-plot(temp_unfiltered*3.3/1023);
-xlabel('Sample number');
-ylabel('Voltage (V)');
-title('Unfiltered Temperature');
-temp_unfiltered = temp_unfiltered(end-samples(1)+1:end);
-% temp_mags = abs(fft(temp_unfiltered));
-% num_bins = length(temp_mags);
-[b, a] = butter(2, .01, 'low');
-temp_filtered = filter(b,a,temp_unfiltered);
-figure (2)
-plot(temp_filtered*3.3/1023);
-xlabel('Sample number');
-ylabel('Voltage (V)');
-title('Filtered Temperature');
-
-figure (6)
-plot(A16);
-title('unfiltered 90 deg');
-turb_unfiltered = cast(A16, 'double');
-turb_unfiltered = turb_unfiltered(end-samples(1)+1:end);
-% turb_mags = abs(fft(turb_unfiltered));
-% num_bins = length(turb_mags);
-[b, a] = butter(2, .005, 'low');
-turb_filtered = filter(b,a,turb_unfiltered);
-figure (3)
-plot(turb_filtered);
-title('filtered 90 deg');
-
-figure (5)
-plot(A15);
-title('unfiltered straight');
-straight_unfiltered = cast(A15, 'double');
-straight_unfiltered = straight_unfiltered(end-samples(1)+1:end);
-% turb_mags = abs(fft(turb_unfiltered));
-% num_bins = length(turb_mags);
-[b, a] = butter(2, .005, 'low');
-straight_filtered = filter(b,a,straight_unfiltered);
-figure (4)
-plot(straight_filtered);
-title('filtered straight');
-
-figure (7)
-turbidity = straight_filtered./turb_filtered;
-plot(turbidity);
-title('turbidity');
-
+% figure (1)
+% temp_unfiltered = cast(A17, 'double');
+% plot(temp_unfiltered*3.3/1023);
+% xlabel('Sample number');
+% ylabel('Voltage (V)');
+% title('Unfiltered Temperature');
+% temp_unfiltered = temp_unfiltered(end-samples(1)+1:end);
+% % temp_mags = abs(fft(temp_unfiltered));
+% % num_bins = length(temp_mags);
+% [b, a] = butter(2, .01, 'low');
+% temp_filtered = filter(b,a,temp_unfiltered);
+% figure (2)
+% plot(temp_filtered*3.3/1023,'r','LineWidth',3);
+% hold on;
+% plot(temp_unfiltered*3.3/1023,'b');
+% xlabel('Sample number');
+% ylabel('Voltage (V)');
+% title('Filtered vs Unfiltered Temperature');
+% % 
+% figure (6)
+% plot(A16);
+% title('unfiltered 90 deg');
+% turb_unfiltered = cast(A16, 'double');
+% turb_unfiltered = turb_unfiltered(end-samples(1)+1:end);
+% % turb_mags = abs(fft(turb_unfiltered));
+% % num_bins = length(turb_mags);
+% [b, a] = butter(2, .005, 'low');
+% turb_filtered = filter(b,a,turb_unfiltered);
+% figure (3)
+% plot(turb_filtered);
+% title('filtered 90 deg');
+% 
+% figure (5)
+% plot(A15);
+% title('unfiltered straight');
+% straight_unfiltered = cast(A15, 'double');
+% straight_unfiltered = straight_unfiltered(end-samples(1)+1:end);
+% % turb_mags = abs(fft(turb_unfiltered));
+% % num_bins = length(turb_mags);
+% [b, a] = butter(2, .005, 'low');
+% straight_filtered = filter(b,a,straight_unfiltered);
+% figure (4)
+% plot(straight_filtered);
+% title('filtered straight');
+% 
+% figure (7)
+% turbidity = straight_filtered./turb_filtered;
+% plot(turbidity);
+% title('turbidity');
+% 
 xshore = 7;
 yshore = 29;
 distfromshore = ((x-xshore).^2+(y-yshore).^2).^(1/2);
@@ -133,109 +191,117 @@ x0 = linspace(xstart,xend,100);
 
 
 
-%copying variable names for copy pasta purposes
-xmeas1 = distfromshore(start:ending);
-ymeas1 = temp_filtered(start:ending);
-
-%coefficients of the fit and information about the errors
-[coefficients1, S1] = polyfit(xmeas1, ymeas1, orderforce); 
-
-%bestfit is the y values of the best fit, delta is something about the errors
-[bestfit1, delta1] = polyval(coefficients1, x0, S1);
-
-%uncertainties on the best fit line
-upper1 = bestfit1 + delta1;
-lower1 = bestfit1 - delta1;
-
-
-
-
-%copying variable names for copy pasta purposes
-xmeas2 = distfromshore(start:ending);
-ymeas2 = turb_filtered(start:ending);
-
-%coefficients of the fit and information about the errors
-[coefficients2, S2] = polyfit(xmeas2, ymeas2, orderforce); 
-
-%bestfit is the y values of the best fit, delta is something about the errors
-[bestfit2, delta2] = polyval(coefficients2, x0, S2);
-
-%uncertainties on the best fit line
-upper2 = bestfit2 + delta2;
-lower2 = bestfit2 - delta2;
-
-
-%copying variable names for copy pasta purposes
-xmeas3 = distfromshore(start:ending);
-ymeas3 = straight_filtered(start:ending);
-
-%coefficients of the fit and information about the errors
-[coefficients3, S3] = polyfit(xmeas3, ymeas3, orderforce); 
-
-%bestfit is the y values of the best fit, delta is something about the errors
-[bestfit3, delta3] = polyval(coefficients3, x0, S3);
-
-%uncertainties on the best fit line
-upper3 = bestfit3 + delta3;
-lower3 = bestfit3 - delta3;
-
-
-%copying variable names for copy pasta purposes
-xmeas4 = distfromshore(start:ending);
-ymeas4 = turbidity(start:ending);
-
-%coefficients of the fit and information about the errors
-[coefficients4, S4] = polyfit(xmeas4, ymeas4, ordercoeff); 
-
-%bestfit is the y values of the best fit, delta is something about the errors
-[bestfit4, delta4] = polyval(coefficients4, x0, S4);
-
-%uncertainties on the best fit line
-upper4 = bestfit4 + delta4;
-lower4 = bestfit4 - delta4;
-
-
-
-
-figure (8)
-plot(xmeas1, ymeas1,'bo');
-hold on;
-plot(x0, bestfit1);
-hold on;
-plot(x0, upper1, '-r');
-hold on;
-plot(x0, lower1, '-r');
-title('temp vs distance');
-
-figure (9)
-plot(xmeas2, ymeas2,'bo');
-hold on;
-plot(x0, bestfit2);
-hold on;
-plot(x0, upper2, '-r');
-hold on;
-plot(x0, lower2, '-r');
-title('90 deg vs distance');
-
-figure (10)
-plot(xmeas3, ymeas3,'bo');
-hold on;
-plot(x0, bestfit3);
-hold on;
-plot(x0, upper3, '-r');
-hold on;
-plot(x0, lower3, '-r');
-title('straight vs distance');
-
-figure (11)
-plot(xmeas4, ymeas4,'bo');
-hold on;
-plot(x0, bestfit4);
-hold on;
-plot(x0, upper4, '-r');
-hold on;
-plot(x0, lower4, '-r');
-title('turbidity vs distance');
+% %copying variable names for copy pasta purposes
+% xmeas1 = distfromshore(start:ending);
+% ymeas1 = temp_filtered(start:ending);
+% ymeas1 = ymeas1*3.3/1023*36.2655-54.1637;
+% 
+% %coefficients of the fit and information about the errors
+% [coefficients1, S1] = polyfit(xmeas1, ymeas1, orderforce); 
+% 
+% %bestfit is the y values of the best fit, delta is something about the errors
+% [bestfit1, delta1] = polyval(coefficients1, x0, S1);
+% 
+% %uncertainties on the best fit line
+% upper1 = bestfit1 + delta1;
+% lower1 = bestfit1 - delta1;
+% 
+% 
+% 
+% 
+% %copying variable names for copy pasta purposes
+% xmeas2 = distfromshore(start:ending);
+% ymeas2 = turb_filtered(start:ending);
+% %ymeas2 = xmeas2*-794.6294+1336.9222;
+% 
+% %coefficients of the fit and information about the errors
+% [coefficients2, S2] = polyfit(xmeas2, ymeas2, orderforce); 
+% 
+% %bestfit is the y values of the best fit, delta is something about the errors
+% [bestfit2, delta2] = polyval(coefficients2, x0, S2);
+% 
+% %uncertainties on the best fit line
+% upper2 = bestfit2 + delta2;
+% lower2 = bestfit2 - delta2;
+% 
+% 
+% %copying variable names for copy pasta purposes
+% xmeas3 = distfromshore(start:ending);
+% ymeas3 = straight_filtered(start:ending);
+% 
+% %coefficients of the fit and information about the errors
+% [coefficients3, S3] = polyfit(xmeas3, ymeas3, orderforce); 
+% 
+% %bestfit is the y values of the best fit, delta is something about the errors
+% [bestfit3, delta3] = polyval(coefficients3, x0, S3);
+% 
+% %uncertainties on the best fit line
+% upper3 = bestfit3 + delta3;
+% lower3 = bestfit3 - delta3;
+% 
+% 
+% %copying variable names for copy pasta purposes
+% xmeas4 = distfromshore(start:ending);
+% ymeas4 = turbidity(start:ending);
+% 
+% %coefficients of the fit and information about the errors
+% [coefficients4, S4] = polyfit(xmeas4, ymeas4, ordercoeff); 
+% 
+% %bestfit is the y values of the best fit, delta is something about the errors
+% [bestfit4, delta4] = polyval(coefficients4, x0, S4);
+% 
+% %uncertainties on the best fit line
+% upper4 = bestfit4 + delta4;
+% lower4 = bestfit4 - delta4;
+% 
+% 
+% 
+% 
+%%%THIS IS THE GOOD ONE
+% figure (8)
+% plot(xmeas1, ymeas1,'bo');
+% hold on;
+% plot(x0, bestfit1);
+% hold on;
+% plot(x0, upper1, '-r');
+% hold on;
+% plot(x0, lower1, '-r');
+% title('Temperature vs Distance from shore');
+% xlabel('Distance from shore (m)');
+% ylabel('Temperature (C)');
+% legend('Measured Data','Best Fit','Best Fit + Uncertainty','Best Fit - Uncertainty');
+% text(17.5, 22, ['Temperature = ' num2str(coefficients1(1)) ' * Distance + ' num2str(coefficients1(2))]);
+% 
+% 
+% figure (9)
+% plot(xmeas2, ymeas2,'bo');
+% hold on;
+% plot(x0, bestfit2);
+% hold on;
+% plot(x0, upper2, '-r');
+% hold on;
+% plot(x0, lower2, '-r');
+% title('90 deg vs distance');
+% 
+% figure (10)
+% plot(xmeas3, ymeas3,'bo');
+% hold on;
+% plot(x0, bestfit3);
+% hold on;
+% plot(x0, upper3, '-r');
+% hold on;
+% plot(x0, lower3, '-r');
+% title('straight vs distance');
+% 
+% figure (11)
+% plot(xmeas4, ymeas4,'bo');
+% hold on;
+% plot(x0, bestfit4);
+% hold on;
+% plot(x0, upper4, '-r');
+% hold on;
+% plot(x0, lower4, '-r');
+% title('turbidity vs distance');
 % %% Section 3
 % %812 pixels = 100 m
 % x = x(abs(x)<1000);

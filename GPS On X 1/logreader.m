@@ -164,6 +164,7 @@ lower1 = bestfit1 - delta1;
 %copying variable names for copy pasta purposes
 xmeas2 = distfromshore(start:ending);
 ymeas2 = turb_filtered(start:ending);
+ymeas2 = ymeas2*3.3/1023*-794.6294+1336.9222;
 
 %coefficients of the fit and information about the errors
 [coefficients2, S2] = polyfit(xmeas2, ymeas2, orderforce); 
@@ -218,6 +219,7 @@ hold on;
 plot(x0, lower1, '-r');
 title('temp vs distance');
 
+%THIS IS THE GOOD ONE
 figure (9)
 plot(xmeas2, ymeas2,'bo');
 hold on;
@@ -226,7 +228,11 @@ hold on;
 plot(x0, upper2, '-r');
 hold on;
 plot(x0, lower2, '-r');
-title('90 deg vs distance');
+title('Turbidity vs Distance from shore');
+xlabel('Distance from shore (m)');
+ylabel('Turbidity (ntu)');
+legend('Measured Data','Best Fit','Best Fit + Uncertainty','Best Fit - Uncertainty');
+text(9,50,['Turbidity = ' num2str(coefficients2(1)) ' * Distance + ' num2str(coefficients2(2))]);
 
 figure (10)
 plot(xmeas3, ymeas3,'bo');

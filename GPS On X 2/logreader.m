@@ -2,7 +2,7 @@
 clear;
 clf;
 
-filenum = '002';
+filenum = '003';
 infofile = strcat('INF', filenum, '.TXT');
 datafile = strcat('LOG', filenum, '.BIN');
 

@@ -36,7 +36,7 @@ plot(x0, lower, '-r');
 xlabel('Voltage (V)');
 %REQUIRES ATTENTION
 ylabel('Turbidity (ntu)');
-title('Turbidity vs Voltage calibration curve');
+title('Turbidity vs Voltage for Straight Across Photodiode');
 legend('Measured Data','Best Fit','Best Fit + Uncertainty','Best Fit - Uncertainty');
 %REQUIRES ATTENTION
 text(.5, 0, ['Turbidity = ' num2str(coefficients(1)) ' * Voltage + ' num2str(coefficients(2))]);
